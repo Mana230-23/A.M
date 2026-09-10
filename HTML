@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A.M — Art Community</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+:root{
+  --bg:#0d0d0f;
+  --card:#17171a;
+  --card2:#202025;
+  --text:#f5f2ee;
+  --muted:#99959a;
+  --border:#29292f;
+  --accent:#d9b8ff;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial, sans-serif;
+  min-height:100vh;
+}
+
+button,input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+header{
+  height:70px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 6%;
+  position:sticky;
+  top:0;
+  background:rgba(13,13,15,.92);
+  backdrop-filter:blur(15px);
+  z-index:100;
+}
+
+.logo{
+  font-family:Georgia,serif;
+  font-size:30px;
+  font-weight:bold;
+  letter-spacing:5px;
+}
+
+.search{
+  width:30%;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:25px;
+  padding:11px 18px;
+  color:white;
+  outline:none;
+}
+
+.search:focus{
+  border-color:var(--accent);
+}
+
+.header-icons{
+  display:flex;
+  gap:15px;
+}
+
+.icon-btn{
+  width:40px;
+  height:40px;
+  border:1px solid var(--border);
+  border-radius:50%;
+  background:var(--card);
+  color:white;
+  font-size:18px;
+}
+
+.app{
+  display:grid;
+  grid-template-columns:230px 1fr 280px;
+  max-width:1450px;
+  margin:auto;
+}
+
+.sidebar{
+  min-height:calc(100vh - 70px);
+  border-right:1px solid var(--border);
+  padding:30px 20px;
+}
+
+.menu{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.menu button{
+  background:none;
+  border:0;
+  color:#aaa;
+  padding:14px;
+  text-align:left;
+  border-radius:12px;
+  transition:.2s;
+}
+
+.menu button:hover,
+.menu button.active{
+  background:var(--card);
+  color:white;
+}
+
+.menu span{
+  margin-right:12px;
+}
+
+.main{
+  padding:30px;
+  max-width:750px;
+  width:100%;
+  margin:auto;
+}
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+.title{
+  font-family:Georgia,serif;
+  font-size:35px;
+  margin-bottom:8px;
+}
+
+.subtitle{
+  color:var(--muted);
+  margin-bottom:25px;
+}
+
+/* CREATE POST */
+
+.create{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:20px;
+  margin-bottom:25px;
+}
+
+.create-top{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+
+.avatar{
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#d9b8ff,#8e6bb5);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#17131b;
+  font-weight:bold;
+}
+
+.fake-input{
+  flex:1;
+  background:var(--card2);
+  border-radius:25px;
+  padding:13px 18px;
+  color:#888;
+  cursor:pointer;
+}
+
+.create-actions{
+  display:flex;
+  justify-content:space-between;
+  margin-top:15px;
+  padding-top:15px;
+  border-top:1px solid var(--border);
+}
+
+.create-actions button{
+  border:0;
+  background:none;
+  color:#aaa;
+}
+
+.create-actions button:hover{
+  color:white;
+}
+
+/* POSTS */
+
+.post{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  overflow:hidden;
+  margin-bottom:25px;
+}
+
+.post-head{
+  padding:17px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.post-user{
+  font-weight:bold;
+}
+
+.post-time{
+  color:#777;
+  font-size:12px;
+}
+
+.post-image{
+  width:100%;
+  display:block;
+  max-height:650px;
+  object-fit:cover;
+  background:#222;
+}
+
+.post-caption{
+  padding:15px 18px;
+  color:#ddd;
+}
+
+.post-actions{
+  display:flex;
+  gap:20px;
+  padding:0 18px 18px;
+}
+
+.post-actions button{
+  background:none;
+  border:0;
+  color:#aaa;
+  font-size:20px;
+}
+
+.post-actions button:hover{
+  color:white;
+}
+
+.likes{
+  color:#aaa;
+  padding:0 18px 12px;
+  font-size:14px;
+}
+
+/* PROFILE */
+
+.profile-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:30px;
+  text-align:center;
+}
+
+.big-avatar{
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#d9b8ff,#695080);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 15px;
+  font-size:35px;
+  font-weight:bold;
+  color:#17131b;
+}
+
+.profile-card h2{
+  font-family:Georgia,serif;
+  margin-bottom:5px;
+}
+
+.profile-card p{
+  color:var(--muted);
+}
+
+.stats{
+  display:flex;
+  justify-content:center;
+  gap:45px;
+  margin:25px 0;
+}
+
+.stats strong{
+  display:block;
+  font-size:20px;
+}
+
+.stats small{
+  color:#888;
+}
+
+.follow{
+  border:0;
+  background:white;
+  color:#111;
+  border-radius:20px;
+  padding:10px 25px;
+  font-weight:bold;
+}
+
+/* ARTISTS */
+
+.artist{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:16px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:15px;
+  margin-bottom:12px;
+}
+
+.artist-info{
+  flex:1;
+}
+
+.artist-info strong{
+  display:block;
+}
+
+.artist-info small{
+  color:#888;
+}
+
+.message-btn{
+  border:1px solid var(--border);
+  background:var(--card2);
+  color:white;
+  border-radius:20px;
+  padding:8px 14px;
+}
+
+/* MESSAGES */
+
+.chat{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  overflow:hidden;
+}
+
+.chat-head{
+  padding:18px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.online{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#72d572;
+  display:inline-block;
+}
+
+.chat-messages{
+  height:420px;
+  overflow-y:auto;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.message{
+  max-width:75%;
+  padding:10px 14px;
+  border-radius:16px;
+  background:var(--card2);
+  align-self:flex-start;
+}
+
+.message.mine{
+  align-self:flex-end;
+  background:#d9b8ff;
+  color:#17131b;
+}
+
+.chat-input{
+  display:flex;
+  gap:10px;
+  padding:15px;
+  border-top:1px solid var(--border);
+}
+
+.chat-input input{
+  flex:1;
+  border:0;
+  outline:0;
+  background:var(--card2);
+  color:white;
+  border-radius:25px;
+  padding:12px 16px;
+}
+
+.send{
+  border:0;
+  background:white;
+  color:#111;
+  width:45px;
+  border-radius:50%;
+}
+
+/* RIGHT SIDEBAR */
+
+.rightbar{
+  border-left:1px solid var(--border);
+  padding:30px 20px;
+}
+
+.right-title{
+  font-weight:bold;
+  margin-bottom:20px;
+}
+
+.suggestion{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.suggestion div:nth-child(2){
+  flex:1;
+}
+
+.suggestion small{
+  display:block;
+  color:#777;
+}
+
+.follow-small{
+  background:none;
+  color:var(--accent);
+  border:0;
+}
+
+/* MODAL */
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.75);
+  z-index:500;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-box{
+  background:#17171a;
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:25px;
+  width:100%;
+  max-width:500px;
+}
+
+.modal-box h2{
+  font-family:Georgia,serif;
+  margin-bottom:20px;
+}
+
+.modal-box input,
+.modal-box textarea{
+  width:100%;
+  background:#202025;
+  border:1px solid var(--border);
+  color:white;
+  padding:13px;
+  border-radius:10px;
+  margin-bottom:12px;
+  outline:none;
+}
+
+.modal-box textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+.modal-buttons{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+}
+
+.cancel{
+  background:none;
+  color:#aaa;
+  border:0;
+  padding:10px;
+}
+
+.publish{
+  background:white;
+  color:#111;
+  border:0;
+  padding:10px 18px;
+  border-radius:20px;
+  font-weight:bold;
+}
+
+/* MOBILE */
+
+@media(max-width:1000px){
+  .app{
+    grid-template-columns:80px 1fr;
+  }
+
+  .sidebar{
+    padding:20px 10px;
+  }
+
+  .menu button{
+    text-align:center;
+    font-size:0;
+  }
+
+  .menu span{
+    font-size:20px;
+    margin:0;
+  }
+
+  .rightbar{
+    display:none;
+  }
+
+  .search{
+    width:40%;
+  }
+}
+
+@media(max-width:600px){
+  header{
+    padding:0 15px;
+  }
+
+  .logo{
+    font-size:23px;
+  }
+
+  .search{
+    display:none;
+  }
+
+  .app{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:65px;
+    min-height:0;
+    padding:5px;
+    background:#111;
+    border-right:0;
+    border-top:1px solid var(--border);
+    z-index:200;
+  }
+
+  .menu{
+    flex-direction:row;
+    justify-content:space-around;
+  }
+
+  .menu button{
+    padding:10px;
+  }
+
+  .main{
+    padding:20px 12px 90px;
+  }
+
+  .gallery{
+    grid-template-columns:1fr 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="logo">A.M</div>
+
+  <input
+    class="search"
+    id="search"
+    placeholder="Rechercher un artiste..."
+  >
+
+  <div class="header-icons">
+    <button class="icon-btn" onclick="showPage('messages')">💬</button>
+    <button class="icon-btn">🔔</button>
+  </div>
+
+</header>
+
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div class="menu">
+
+      <button class="active" onclick="showPage('home',this)">
+        <span>🏠</span> Accueil
+      </button>
+
+      <button onclick="showPage('explore',this)">
+        <span>🔎</span> Explorer
+      </button>
+
+      <button onclick="showPage('messages',this)">
+        <span>💬</span> Messages
+      </button>
+
+      <button onclick="showPage('profile',this)">
+        <span>👤</span> Profil
+      </button>
+
+      <button onclick="openModal()">
+        <span>＋</span> Publier
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <!-- MAIN -->
+
+  <main class="main">
+
+
+    <!-- HOME -->
+
+    <section id="home" class="page active">
+
+      <h1 class="title">Pour les artistes.</h1>
+
+      <p class="subtitle">
+        Partage. Dessine. Rencontre. Inspire.
+      </p>
+
+
+      <div class="create">
+
+        <div class="create-top">
+
+          <div class="avatar">AM</div>
+
+          <div class="fake-input" onclick="openModal()">
+            Partager une nouvelle œuvre...
+          </div>
+
+        </div>
+
+        <div class="create-actions">
+
+          <button onclick="openModal()">🖼️ Œuvre</button>
+
+          <button onclick="openModal()">✏️ Sketch</button>
+
+          <button onclick="openModal()">💭 Idée</button>
+
+        </div>
+
+      </div>
+
+
+      <div id="feed"></div>
+
+    </section>
+
+
+    <!-- EXPLORE -->
+
+    <section id="explore" class="page">
+
+      <h1 class="title">Explorer</h1>
+
+      <p class="subtitle">
+        Découvre d'autres artistes.
+      </p>
+
+      <div id="artists"></div>
+
+    </section>
+
+
+    <!-- MESSAGES -->
+
+    <section id="messages" class="page">
+
+      <h1 class="title">Messages</h1>
+
+      <p class="subtitle">
+        Discute avec les artistes de A.M.
+      </p>
+
+
+      <div class="chat">
+
+        <div class="chat-head">
+
+          <div class="avatar">AY</div>
+
+          <div>
+            <strong>Ayana Art</strong><br>
+            <small>
+              <span class="online"></span> en ligne
+            </small>
+          </div>
+
+        </div>
+
+
+        <div class="chat-messages" id="chatMessages">
+
+          <div class="message">
+            Salut ! J'adore ton dernier dessin 🎨
+          </div>
+
+          <div class="message mine">
+            Merci beaucoup ! ❤️
+          </div>
+
+        </div>
+
+
+        <form class="chat-input" onsubmit="sendMessage(event)">
+
+          <input
+            id="messageInput"
+            placeholder="Écrire un message..."
+            autocomplete="off"
+          >
+
+          <button class="send">
+            ➤
+          </button>
+
+        </form>
+
+      </div>
+
+    </section>
+
+
+    <!-- PROFILE -->
+
+    <section id="profile" class="page">
+
+      <div class="profile-card">
+
+        <div class="big-avatar">AM</div>
+
+        <h2>A.M</h2>
+
+        <p>@am.artist</p>
+
+        <p style="margin-top:12px;">
+          Dessin • Illustration • Créativité
+        </p>
+
+
+        <div class="stats">
+
+          <div>
+            <strong id="postCount">3</strong>
+            <small>Œuvres</small>
+          </div>
+
+          <div>
+            <strong>248</strong>
+            <small>Abonnés</small>
+          </div>
+
+          <div>
+            <strong>127</strong>
+            <small>Abonnements</small>
+          </div>
+
+        </div>
+
+
+        <button class="follow">
+          Modifier le profil
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- RIGHT BAR -->
+
+  <aside class="rightbar">
+
+    <div class="right-title">
+      Artistes à découvrir
+    </div>
+
+
+    <div class="suggestion">
+
+      <div class="avatar">SA</div>
+
+      <div>
+        <strong>Sarah Draw</strong>
+        <small>@sarahdraw</small>
+      </div>
+
+      <button class="follow-small">
+        Suivre
+      </button>
+
+    </div>
+
+
+    <div class="suggestion">
+
+      <div class="avatar">JD</div>
+
+      <div>
+        <strong>Jade Art</strong>
+        <small>@jadeart</small>
+      </div>
+
+      <button class="follow-small">
+        Suivre
+      </button>
+
+    </div>
+
+
+    <div class="suggestion">
+
+      <div class="avatar">KL</div>
+
+      <div>
+        <strong>Kely Sketch</strong>
+        <small>@kelysketch</small>
+      </div>
+
+      <button class="follow-small">
+        Suivre
+      </button>
+
+    </div>
+
+  </aside>
+
+</div>
+
+
+<!-- MODAL PUBLICATION -->
+
+<div class="modal" id="modal">
+
+  <div class="modal-box">
+
+    <h2>Nouvelle œuvre 🎨</h2>
+
+    <input
+      type="text"
+      id="artTitle"
+      placeholder="Titre de ton œuvre"
+    >
+
+    <input
+      type="text"
+      id="artImage"
+      placeholder="Lien de l'image"
+    >
+
+    <textarea
+      id="artDescription"
+      placeholder="Décris ton dessin..."
+    ></textarea>
+
+    <div class="modal-buttons">
+
+      <button class="cancel" onclick="closeModal()">
+        Annuler
+      </button>
+
+      <button class="publish" onclick="publishArt()">
+        Publier
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   DONNÉES
+========================= */
+
+let posts = JSON.parse(
+  localStorage.getItem("AM_posts")
+) || [
+
+  {
+    user:"Luna Draw",
+    avatar:"LD",
+    title:"Moon",
+    description:"Une petite étude autour de la lumière et de la nuit. 🌙",
+    image:"https://images.unsplash.com/photo-1577083288073-40892c0860a4?auto=format&fit=crop&w=900&q=80",
+    likes:42
+  },
+
+  {
+    user:"Ari Sketch",
+    avatar:"AS",
+    title:"Portrait",
+    description:"Étude de portrait au crayon.",
+    image:"https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&w=900&q=80",
+    likes:67
+  },
+
+  {
+    user:"Maya Art",
+    avatar:"MA",
+    title:"Dream",
+    description:"Quand une idée devient une image.",
+    image:"https://images.unsplash.com/photo-1547891654-e66ed7ebb968?auto=format&fit=crop&w=900&q=80",
+    likes:91
+  }
+
+];
+
+
+const artists = [
+
+  ["Sarah Draw","SD","@sarahdraw"],
+  ["Jade Art","JA","@jadeart"],
+  ["Kely Sketch","KS","@kelysketch"],
+  ["Naya Illustration","NI","@nayaillustration"],
+  ["Léa Creative","LC","@leacreative"]
+
+];
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function showPage(id,button){
+
+  document.querySelectorAll(".page")
+    .forEach(page => page.classList.remove("active"));
+
+  document.getElementById(id)
+    .classList.add("active");
+
+  document.querySelectorAll(".menu button")
+    .forEach(btn => btn.classList.remove("active"));
+
+  if(button){
+    button.classList.add("active");
+  }
+
+  if(id === "home"){
+    renderFeed();
+  }
+
+  if(id === "explore"){
+    renderArtists();
+  }
+
+}
+
+
+/* =========================
+   FEED
+========================= */
+
+function renderFeed(){
+
+  const feed = document.getElementById("feed");
+
+  feed.innerHTML = "";
+
+  posts.forEach((post,index)=>{
+
+    feed.innerHTML += `
+
+      <article class="post">
+
+        <div class="post-head">
+
+          <div class="avatar">
+            ${post.avatar}
+          </div>
+
+          <div>
+            <div class="post-user">
+              ${post.user}
+            </div>
+
+            <div class="post-time">
+              Il y a quelque temps
+            </div>
+          </div>
+
+        </div>
+
+
+        <img
+          class="post-image"
+          src="${post.image}"
+          alt="${post.title}"
+          onerror="this.src='https://via.placeholder.com/800x600?text=A.M+Artwork'"
+        >
+
+
+        <div class="post-caption">
+
+          <strong>${post.title}</strong>
+
+          <br>
+
+          ${post.description}
+
+        </div>
+
+
+        <div class="likes">
+          ❤️ ${post.likes} mentions J'aime
+        </div>
+
+
+        <div class="post-actions">
+
+          <button onclick="likePost(${index})">
+            ❤️
+          </button>
+
+          <button>
+            💬
+          </button>
+
+          <button onclick="sharePost(${index})">
+            ↗️
+          </button>
+
+          <button>
+            🔖
+          </button>
+
+        </div>
+
+      </article>
+
+    `;
+
+  });
+
+  document.getElementById("postCount").textContent =
+    posts.filter(p => p.user === "A.M").length;
+
+}
+
+
+/* =========================
+   LIKE
+========================= */
+
+function likePost(index){
+
+  posts[index].likes++;
+
+  savePosts();
+
+  renderFeed();
+
+}
+
+
+/* =========================
+   SHARE
+========================= */
+
+function sharePost(index){
+
+  const post = posts[index];
+
+  const text =
+    `Découvrez "${post.title}" sur A.M 🎨`;
+
+  if(navigator.share){
+
+    navigator.share({
+      title:"A.M",
+      text:text
+    });
+
+  }else{
+
+    navigator.clipboard.writeText(text);
+
+    alert("Publication copiée !");
+
+  }
+
+}
+
+
+/* =========================
+   ARTISTES
+========================= */
+
+function renderArtists(){
+
+  const container =
+    document.getElementById("artists");
+
+  container.innerHTML = "";
+
+  artists.forEach(artist=>{
+
+    container.innerHTML += `
+
+      <div class="artist">
+
+        <div class="avatar">
+          ${artist[1]}
+        </div>
+
+        <div class="artist-info">
+
+          <strong>${artist[0]}</strong>
+
+          <small>${artist[2]}</small>
+
+        </div>
+
+        <button
+          class="message-btn"
+          onclick="openArtistChat('${artist[0]}')"
+        >
+          Message
+        </button>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+
+/* =========================
+   CHAT
+========================= */
+
+function sendMessage(event){
+
+  event.preventDefault();
+
+  const input =
+    document.getElementById("messageInput");
+
+  const text =
+    input.value.trim();
+
+  if(!text) return;
+
+  const messages =
+    document.getElementById("chatMessages");
+
+  const message =
+    document.createElement("div");
+
+  message.className = "message mine";
+
+  message.textContent = text;
+
+  messages.appendChild(message);
+
+  input.value = "";
+
+  messages.scrollTop =
+    messages.scrollHeight;
+
+  localStorage.setItem(
+    "AM_last_message",
+    text
+  );
+
+}
+
+
+function openArtistChat(name){
+
+  showPage("messages");
+
+  const head =
+    document.querySelector(".chat-head");
+
+  head.querySelector("strong").textContent =
+    name;
+
+}
+
+
+/* =========================
+   MODAL
+========================= */
+
+function openModal(){
+
+  document
+    .getElementById("modal")
+    .classList.add("show");
+
+}
+
+
+function closeModal(){
+
+  document
+    .getElementById("modal")
+    .classList.remove("show");
+
+}
+
+
+/* =========================
+   PUBLICATION
+========================= */
+
+function publishArt(){
+
+  const title =
+    document.getElementById("artTitle").value.trim();
+
+  const image =
+    document.getElementById("artImage").value.trim();
+
+  const description =
+    document.getElementById("artDescription").value.trim();
+
+
+  if(!title || !image){
+
+    alert("Ajoute au moins un titre et une image.");
+
+    return;
+
+  }
+
+
+  posts.unshift({
+
+    user:"A.M",
+    avatar:"AM",
+    title:title,
+    description:description || "Nouvelle création 🎨",
+    image:image,
+    likes:0
+
+  });
+
+
+  savePosts();
+
+  document.getElementById("artTitle").value = "";
+  document.getElementById("artImage").value = "";
+  document.getElementById("artDescription").value = "";
+
+  closeModal();
+
+  showPage("home");
+
+  renderFeed();
+
+}
+
+
+function savePosts(){
+
+  localStorage.setItem(
+    "AM_posts",
+    JSON.stringify(posts)
+  );
+
+}
+
+
+/* =========================
+   RECHERCHE
+========================= */
+
+document
+  .getElementById("search")
+  .addEventListener("input",function(){
+
+    const value =
+      this.value.toLowerCase();
+
+    const filtered =
+      artists.filter(a =>
+        a[0].toLowerCase().includes(value) ||
+        a[2].toLowerCase().includes(value)
+      );
+
+
+    const container =
+      document.getElementById("artists");
+
+    container.innerHTML = "";
+
+    filtered.forEach(artist=>{
+
+      container.innerHTML += `
+
+        <div class="artist">
+
+          <div class="avatar">
+            ${artist[1]}
+          </div>
+
+          <div class="artist-info">
+
+            <strong>${artist[0]}</strong>
+
+            <small>${artist[2]}</small>
+
+          </div>
+
+          <button
+            class="message-btn"
+            onclick="openArtistChat('${artist[0]}')"
+          >
+            Message
+          </button>
+
+        </div>
+
+      `;
+
+    });
+
+
+    if(value){
+
+      showPage("explore");
+
+    }
+
+  });
+
+
+/* =========================
+   INITIALISATION
+========================= */
+
+renderFeed();
+renderArtists();
+
+</script>
+
+</body>
+</html>
